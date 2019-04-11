@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import './App.css';
+import '../css/App.css';
+import "../css/logo.svg";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -21,13 +22,20 @@ class App extends Component<any, IState> {
         super(props)
         this.state = {route: "/"};
     }
-    
+
     render(): React.ReactNode {
         return (
             <Router>
                 <div className="App">
                     <Navbar variant="dark" expand="lg">
-                        <Navbar.Brand href="#home">Currency Converter</Navbar.Brand>
+                        <Navbar.Brand href="#home">
+                            <img
+                                src={"./logo.png"}
+                                width="30"
+                                height="30"
+                                className="d-inline-block align-top"
+                                alt="React Bootstrap logo"
+                            /> Currency Converter</Navbar.Brand>
                         <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                         <Navbar.Collapse id="basic-navbar-nav">
                             <Nav className="mr-auto">
