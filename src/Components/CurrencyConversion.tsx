@@ -1,4 +1,4 @@
-import React, {Component, FormEvent, ReactNode} from 'react';
+import React, {Component, ReactNode} from 'react';
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -10,27 +10,32 @@ import LoadingCard from "./LoadingCard";
 import {getCurrencies, ICurrency} from "../Data/CurrencyListData";
 import Spinner from "react-bootstrap/Spinner";
 import {convertValue, IConversionResult} from "../Data/CurrencyConversion";
+import HistoryChart, {HistoryChartMode} from "./HistoryChart";
+import {getCurrencyHistoryData} from "../Data/CurrencyHistoryData";
 
-
-interface IState {
+// Define the content and types of the component state
+interface ICurrencyConversionState {
     loading: boolean,
     currencies: ICurrency[];
     formValidated: boolean,
     result: string,
-    isCalculating: boolean
+    isCalculating: boolean,
+    chartMode: HistoryChartMode
+    chartData: any
 }
 
-class CurrencyConversion extends Component<any, IState> {
+class CurrencyConversion extends Component<any, ICurrencyConversionState> {
 
     constructor(props: any) {
         super(props);
-        getCurrencies().then((data) => this.setState({loading: false, currencies: data}));
         this.state = {
             loading: true,
             formValidated: false,
             currencies: [{currencyName: "null", id: "null"}],
             result: "",
-            isCalculating: false
+            isCalculating: false,
+            chartMode: HistoryChartMode.Empty,
+            chartData: []
         };
     }
 
@@ -44,7 +49,7 @@ class CurrencyConversion extends Component<any, IState> {
             const source: string = event.target[0].value;
             const value: number = event.target[1].value;
             const target: string = event.target[2].value;
-            this.setState({result: "Calculating...", isCalculating: true});
+            this.setState({result: "Calculating...", isCalculating: true, chartMode: HistoryChartMode.Loading});
 
             // Get data
             convertValue(source, value, target).then((data: IConversionResult) => {
@@ -55,9 +60,23 @@ class CurrencyConversion extends Component<any, IState> {
                 });
             });
 
-        } else {
+            // Load statistics chart
+            getCurrencyHistoryData(source, target).then((data) => {
+                console.log(data);
+                this.setState({
+                    chartMode: HistoryChartMode.Loaded, 
+                    chartData: data
+                });
+            });
+
+        }
+         else {
             this.setState({formValidated: true});
         }
+    }
+
+    componentDidMount(): void {
+        getCurrencies().then((data) => this.setState({loading: false, currencies: data}));
     }
 
     render(): ReactNode {
@@ -123,6 +142,8 @@ class CurrencyConversion extends Component<any, IState> {
                     </Card.Body>
                 </Card>
                 }
+                <br/>
+                <HistoryChart mode={this.state.chartMode} chartData={this.state.chartData}/>
             </div>
         );
     }
