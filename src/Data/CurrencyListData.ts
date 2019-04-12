@@ -1,4 +1,4 @@
-import {API_KEY} from "./Key";
+import {API_KEY, API_URL} from "./Key";
 
 export interface ICurrency {
     currencyName: string,
@@ -7,7 +7,7 @@ export interface ICurrency {
 }
 
 export async function getCurrencies(): Promise<ICurrency[]> {
-    let response: Response = await fetch("https://free.currconv.com/api/v7/currencies?apiKey=" + API_KEY);
+    let response: Response = await fetch(API_URL + "/api/v7/currencies?apiKey=" + API_KEY);
     let responseData = (await response.json()).results;
     let dataArray: ICurrency[] = [];
     
