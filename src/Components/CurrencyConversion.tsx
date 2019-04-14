@@ -17,7 +17,7 @@ import {getCurrencyHistoryData} from "../Data/CurrencyHistoryData";
 interface ICurrencyConversionState {
     loading: boolean,
     currencies: ICurrency[];
-    formValidated: boolean,
+    displayFormValidation: boolean,
     result: string,
     isCalculating: boolean,
     chartMode: HistoryChartMode
@@ -30,7 +30,7 @@ class CurrencyConversion extends Component<any, ICurrencyConversionState> {
         super(props);
         this.state = {
             loading: true,
-            formValidated: false,
+            displayFormValidation: false,
             currencies: [{currencyName: "null", id: "null"}],
             result: "",
             isCalculating: false,
@@ -71,7 +71,7 @@ class CurrencyConversion extends Component<any, ICurrencyConversionState> {
 
         }
          else {
-            this.setState({formValidated: true});
+            this.setState({displayFormValidation: true});
         }
     }
 
