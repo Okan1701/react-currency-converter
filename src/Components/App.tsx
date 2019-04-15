@@ -3,11 +3,9 @@ import '../css/App.css';
 import "../css/logo.svg";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import CurrencyConversion from "./CurrencyConversion";
 import {Route, Link, BrowserRouter as Router, Switch} from 'react-router-dom'
-import CryptocurrencyList from "./CryptocurrencyList";
-import NavLink from "react-bootstrap/NavLink";
+import CryptocurrencyOverview from "./CryptocurrencyOverview";
 
 interface IAppState {
     navBarBtnState: number
@@ -61,7 +59,7 @@ class App extends Component<any, IAppState> {
                     <br/>
                     <Switch>
                         <Route exact path="/" component={CurrencyConversion}/>
-                        <Route path="/cryptocurrency" component={CryptocurrencyList}/>
+                        <Route path="/cryptocurrency" component={CryptocurrencyOverview}/>
                     </Switch>
                 </div>
             </Router>

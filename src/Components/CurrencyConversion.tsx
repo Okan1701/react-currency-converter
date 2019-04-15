@@ -5,7 +5,6 @@ import Form from "react-bootstrap/Form";
 import {FormGroup} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import "../Data/CurrencyListData";
 import LoadingCard from "./LoadingCard";
 import {getCurrencies, ICurrency} from "../Data/CurrencyListData";
 import Spinner from "react-bootstrap/Spinner";
