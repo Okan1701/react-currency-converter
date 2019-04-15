@@ -11,10 +11,11 @@ import Spinner from "react-bootstrap/Spinner";
 import {convertValue, IConversionResult} from "../Data/CurrencyConversion";
 import HistoryChart, {HistoryChartMode} from "./HistoryChart";
 import {getCurrencyHistoryData} from "../Data/CurrencyHistoryData";
+import {LoadingState} from "../LoadingEnum";
 
 // Define the content and types of the component state
 interface ICurrencyConversionState {
-    loading: boolean,
+    loadingState: LoadingState,
     currencies: ICurrency[];
     displayFormValidation: boolean,
     result: string,
@@ -28,7 +29,7 @@ class CurrencyConversion extends Component<any, ICurrencyConversionState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            loading: true,
+            loadingState: LoadingState.Loading,
             displayFormValidation: false,
             currencies: [{currencyName: "null", id: "null"}],
             result: "",
@@ -51,31 +52,48 @@ class CurrencyConversion extends Component<any, ICurrencyConversionState> {
             this.setState({result: "Calculating...", isCalculating: true, chartMode: HistoryChartMode.Loading});
 
             // Get data
-            convertValue(source, value, target).then((data: IConversionResult) => {
-                // Update state by updating the result string and disabling the loading button
-                this.setState({
-                    isCalculating: false,
-                    result: `${data.originalValue} ${data.source} = ${data.calculatedValue} ${data.target}`
-                });
-            });
+            convertValue(source, value, target).then(
+                (data: IConversionResult) => {
+                    // Update state by updating the result string and disabling the loading button
+                    this.setState({
+                        isCalculating: false,
+                        result: `${data.originalValue} ${data.source} = ${data.calculatedValue} ${data.target}`
+                    });
+                },
+                (reason) => {
+                    this.setState({
+                        isCalculating: false,
+                        result: reason
+                    });
+                }
+            );
 
             // Load statistics chart
-            getCurrencyHistoryData(source, target).then((data) => {
-                console.log(data);
-                this.setState({
-                    chartMode: HistoryChartMode.Loaded, 
-                    chartData: data
-                });
-            });
+            getCurrencyHistoryData(source, target).then(
+                (data) => {
+                    console.log(data);
+                    this.setState({
+                        chartMode: HistoryChartMode.Loaded,
+                        chartData: data
+                    })
+                },
+                (reason) => {
+                    this.setState({
+                        chartMode: HistoryChartMode.Failed
+                    });
+                }
+            );
 
-        }
-         else {
+        } else {
             this.setState({displayFormValidation: true});
         }
     }
 
     componentDidMount(): void {
-        getCurrencies().then((data) => this.setState({loading: false, currencies: data}));
+        getCurrencies().then(
+            (data) => this.setState({loadingState: LoadingState.Loaded, currencies: data}),
+            (reason) => this.setState({loadingState: LoadingState.Failed})
+        );
     }
 
     render(): ReactNode {
@@ -94,11 +112,12 @@ class CurrencyConversion extends Component<any, ICurrencyConversionState> {
                 <h1>Main Page</h1>
                 <hr/>
                 <strong>On this page, you can peform currency conversion!</strong><br/>
-                <p>You can choose the source currency with the left dropdown and then choose the target currency with the right dropdown. 
+                <p>You can choose the source currency with the left dropdown and then choose the target currency with
+                    the right dropdown.
                     When entering a currency value, please ensure that it only contains numbers with 2 decimals max!</p>
                 <br/>
-                <LoadingCard show={this.state.loading} text="Loading currency data..."/>
-                {this.state.loading === false &&
+                <LoadingCard show={this.state.loadingState === LoadingState.Loading} text="Loading currency data..."/>
+                {this.state.loadingState === LoadingState.Loaded &&
                 <Card>
                     <Card.Body>
                         <Card.Title>Conversion</Card.Title>
@@ -147,5 +166,6 @@ class CurrencyConversion extends Component<any, ICurrencyConversionState> {
         );
     }
 }
+
 
 export default CurrencyConversion

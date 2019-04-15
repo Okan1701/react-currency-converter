@@ -3,6 +3,8 @@ import Card from "react-bootstrap/Card";
 import Table from "react-bootstrap/Table";
 import {CryptoListSortMode, getCryptoList, getImageUrl, ICryptoCurrency} from "../Data/CryptoListData";
 import LoadingCard from "./LoadingCard";
+import ErrorCard from "./ErrorCard";
+import {LoadingState} from "../LoadingEnum";
 
 interface ICryptoTableListState {
     loadingState: LoadingState
@@ -45,7 +47,7 @@ class CryptoTableList extends Component<ICryptoTableListProps, ICryptoTableListS
     render(): ReactNode {
         switch (this.state.loadingState) {
             case LoadingState.Loading:
-                return <LoadingCard text={this.state.errorMsg} show={true}/>;
+                return <LoadingCard text="Loading data..." show={true}/>;
             case LoadingState.Loaded:
                 return (
                     <Card>
@@ -82,15 +84,9 @@ class CryptoTableList extends Component<ICryptoTableListProps, ICryptoTableListS
                 );
                 
             case LoadingState.Failed:
-                return <strong>Failed to load data!</strong>
+                return <ErrorCard text={this.state.errorMsg}/>
         }
     }
-}
-
-enum LoadingState {
-    Loading,
-    Loaded,
-    Failed
 }
 
 export default CryptoTableList

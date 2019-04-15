@@ -1,6 +1,7 @@
 import React, {Component, ReactNode} from 'react';
 import CryptoTableList from "./CryptoTableList";
 import {CryptoListSortMode} from "../Data/CryptoListData";
+import ErrorCard from "./ErrorCard";
 
 
 class CryptocurrencyOverview extends Component {

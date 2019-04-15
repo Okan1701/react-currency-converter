@@ -20,7 +20,7 @@ class LoadingCard extends Component<IProps,any> {
                     <Card.Body>
                         <div className="align-content-center">
                             <Spinner animation="border" variant="primary" text/>
-                            <br/>
+                            <br/><br/>
                             <Card.Title><strong>{this.props.text}</strong></Card.Title>
                         </div>
                     </Card.Body>

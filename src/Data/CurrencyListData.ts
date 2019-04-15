@@ -8,6 +8,9 @@ export interface ICurrency {
 
 export async function getCurrencies(): Promise<ICurrency[]> {
     let response: Response = await fetch(API_URL + "/api/v7/currencies?apiKey=" + API_KEY);
+    
+    if (!response.ok) throw "Failed to load data!";
+    
     let responseData = (await response.json()).results;
     let dataArray: ICurrency[] = [];
     

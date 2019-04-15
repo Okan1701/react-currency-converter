@@ -3,11 +3,13 @@ import Card from "react-bootstrap/Card";
 import Spinner from "./LoadingCard";
 import LoadingCard from "./LoadingCard";
 import Chart from 'react-google-charts';
+import ErrorCard from "./ErrorCard";
 
 export enum HistoryChartMode {
     Empty,
     Loading,
-    Loaded
+    Loaded,
+    Failed
 }
 
 interface IHistoryChartProps {
@@ -63,6 +65,8 @@ class HistoryChart extends Component<IHistoryChartProps, any> {
                         </Card.Body>
                     </Card>
                 );
+            case HistoryChartMode.Failed:
+                return <ErrorCard text="Failed to retrieve history data!"/>
         }
 
     }
