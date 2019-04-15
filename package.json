@@ -2,6 +2,7 @@
   "name": "react-currency-converter",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://okanemeni.github.io/react-currency-converter/",
   "dependencies": {
     "@types/canvasjs": "^1.9.5",
     "@types/jest": "24.0.11",
@@ -23,7 +24,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
