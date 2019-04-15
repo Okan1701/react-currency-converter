@@ -54,6 +54,14 @@ class App extends Component<any, IAppState> {
                                           }}>
                                     Cryptocurrency
                                 </Nav.Link>
+                                <Nav.Link as={Link}
+                                          to="/about"
+                                          active={this.state.navBarBtnState === 2}
+                                          onClick={() => {
+                                              this.setState({navBarBtnState: 2})
+                                          }}>
+                                    About
+                                </Nav.Link>
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>
